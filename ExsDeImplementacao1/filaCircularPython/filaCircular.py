@@ -15,7 +15,7 @@ class FilaCircular:
    	#Verifica se a fila
    	#está vazia
     def isEmpty(self):
-   		return self.qtde == 0
+        return self.qtde == 0
   
     # Verifica se a fila está
     # cheia

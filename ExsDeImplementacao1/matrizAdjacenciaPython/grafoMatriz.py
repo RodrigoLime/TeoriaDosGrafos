@@ -23,9 +23,33 @@ class Grafo:
     # remove uma aresta v->w do Grafo	
     def removeA(self, v, w):
         # testa se temos a aresta
-	    if self.adj[v][w] == 1:
-	        self.adj[v][w] = 0
-	        self.m-=1; # atualiza qtd arestas
+        if self.adj[v][w] == 1:
+            self.adj[v][w] = 0
+            self.m-=1 # atualiza qtd arestas
+
+    #Ex1
+    def inDegree(self, v):
+        grau = 0
+        for i in range(self.n):
+            if self.adj[i][v] == 1:
+                grau+=1
+        return grau
+
+    #Ex2
+    def outDegree(self, v):
+        grau = 0
+        for i in range(self.n):
+            if self.adj[v][i] == 1:
+                grau+=1
+        return grau
+    
+    #Ex3
+    def isVSource(self, v):
+        return (self.inDegree(v) == 0 and self.outDegree(v) > 0)
+    
+    #Ex4
+    def isVSink(self, v):
+        return (self.inDegree(v) > 0 and self.outDegree(v) == 0)
 
 	# Apresenta o Grafo contendo
 	# número de vértices, arestas

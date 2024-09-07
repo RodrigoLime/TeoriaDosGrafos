@@ -17,3 +17,9 @@ g.insereA(1,3)
 # mostra o grafo preenchido
 g.show()
 g.showMin()
+
+# grau de entrada do vertice 3:
+print(f"grau de entrada do vertice 3: {g.inDegree(3)}")
+
+# grau de saida do vertice 0:
+print(f"grau de saida do vertice 0: {g.outDegree(0)}")

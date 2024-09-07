@@ -13,7 +13,8 @@ class Pilha:
    	#Verifica se a pilha
    	#está vazia
     def isEmpty(self):
-   		return self.topoPilha == -1
+        return self.topoPilha == -1
+    
   
     # Verifica se a pilha está
     # cheia
