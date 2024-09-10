@@ -112,51 +112,25 @@ class Grafo:
         return tempAdj
     
     #Ex14
-    def isVConnected(self, v, w):
-        visited = [False] * self.n
+    def directTransitiveClosure(self):
+        reach = [[self.adj[i][j] for j in range(self.n)] for i in range(self.n)]
 
-        def dfs(current):
-            if current == w:
-                return True
-            visited[current] = True
-            for neighbor in range(self.n):
-                if self.adj[current][neighbor] != 0 and not visited[neighbor]:
-                    if dfs(neighbor):
-                        return True
-            return False
+        for k in range(self.n):
+            for i in range(self.n):
+                for j in range(self.n):
+                    reach[i][j] = reach[i][j] or (reach[i][k] and reach[k][j])
 
-        return dfs(v)
+        return reach
 
-    def isStronglyConnected(self):
-        for i in range(self.n):
-            for j in range(self.n):
-                if i != j and not self.isVConnected(i, j):
-                    return False
-        return True
+    def inverseTransitiveClosure(self):
+        reach = [[self.adj[j][i] for j in range(self.n)] for i in range(self.n)]
 
-    def isSemiStronglyConnected(self):
-        for i in range(self.n):
-            for j in range(self.n):
-                if i != j and not (self.isVConnected(i, j) or self.isVConnected(j, i)):
-                    return False
-        return True
-    
-    def isDisconnected(self):
-        for i in range(self.n):
-            for j in range(self.n):
-                if i != j and not (self.isVConnected(i, j) or self.isVConnected(j, i)):
-                    return True
-        return False
-        
-    def Connectivity(self):
-        if self.isStronglyConnected():
-            return 3
-        elif self.isSemiStronglyConnected():
-            return 2
-        elif self.isDisconnected():
-            return 0
-        else: #Simplesmente conexo
-            return 1
+        for k in range(self.n):
+            for i in range(self.n):
+                for j in range(self.n):
+                    reach[i][j] = reach[i][j] or (reach[i][k] and reach[k][j])
+
+        return reach
         
     #Ex15
     #def Reduce(self):
