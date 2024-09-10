@@ -50,6 +50,118 @@ class Grafo:
     #Ex4
     def isVSink(self, v):
         return (self.inDegree(v) > 0 and self.outDegree(v) == 0)
+    
+    #Ex5
+    def isSymmetric(self):
+        for i in range(self.n):
+            for j in range(self.n):
+                if self.adj[i][j] != self.adj[j][i]:
+                    return False
+        return True
+
+    #Ex6
+    def initFile(self, nomeArq):
+        arq = open(nomeArq, "r")
+        self.n = int(arq.readline())
+        self.m = int(arq.readline())
+        for i in range(self.m):
+            v, w = map(int, arq.readline().split())
+            self.insereA(v, w)
+        arq.close()
+
+    #Ex9
+    def removeV(self, v):
+        for i in range(self.n):
+            self.removeA(v, i)
+            self.removeA(i, v)
+
+        tempAdj = [[0 for _ in range(self.n - 1)] for _ in range(self.n - 1)]
+        i2 = 0
+        j2 = 0
+        for i in range(self.n):
+            j2 = 0
+            if i == v:
+                continue
+            for j in range(self.n):
+                if j == v:
+                    continue
+                tempAdj[i2][j2] = self.adj[i][j]
+                j2+=1
+            i2+=1
+        self.n-=1
+        self.adj = tempAdj
+    
+    #Ex11
+    def isComplete(self):
+        for i in range(self.n):
+            for j in range(self.n):
+                if i != j and self.adj[i][j] == 0:
+                    return False
+        return True
+
+    #Ex12
+    def Complementary(self):
+        tempAdj = [[0 for _ in range(self.n)] for _ in range(self.n)]
+        for i in range(self.n):
+            for j in range(self.n):
+                if i != j:  # Pula diagonal
+                    if self.adj[i][j] == 0:
+                        tempAdj[i][j] = 1
+                    else:
+                        tempAdj[i][j] = 0
+        return tempAdj
+    
+    #Ex14
+    def isVConnected(self, v, w):
+        visited = [False] * self.n
+
+        def dfs(current):
+            if current == w:
+                return True
+            visited[current] = True
+            for neighbor in range(self.n):
+                if self.adj[current][neighbor] != 0 and not visited[neighbor]:
+                    if dfs(neighbor):
+                        return True
+            return False
+
+        return dfs(v)
+
+    def isStronglyConnected(self):
+        for i in range(self.n):
+            for j in range(self.n):
+                if i != j and not self.isVConnected(i, j):
+                    return False
+        return True
+
+    def isSemiStronglyConnected(self):
+        for i in range(self.n):
+            for j in range(self.n):
+                if i != j and not (self.isVConnected(i, j) or self.isVConnected(j, i)):
+                    return False
+        return True
+    
+    def isDisconnected(self):
+        for i in range(self.n):
+            for j in range(self.n):
+                if i != j and not (self.isVConnected(i, j) or self.isVConnected(j, i)):
+                    return True
+        return False
+        
+    def Connectivity(self):
+        if self.isStronglyConnected():
+            return 3
+        elif self.isSemiStronglyConnected():
+            return 2
+        elif self.isDisconnected():
+            return 0
+        else: #Simplesmente conexo
+            return 1
+        
+    #Ex15
+    #def Reduce(self):
+
+        
 
 	# Apresenta o Grafo contendo
 	# número de vértices, arestas
