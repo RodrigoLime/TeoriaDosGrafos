@@ -64,7 +64,7 @@ class Grafo:
         arq = open(nomeArq, "r")
         self.n = int(arq.readline())
         self.m = int(arq.readline())
-        for i in range(self.m):
+        for _ in range(self.m):
             v, w = map(int, arq.readline().split())
             self.insereA(v, w)
         arq.close()
@@ -111,7 +111,7 @@ class Grafo:
                         tempAdj[i][j] = 0
         return tempAdj
     
-    #Ex14
+    #Ex14S
     def directTransitiveClosure(self):
         reach = [[self.adj[i][j] for j in range(self.n)] for i in range(self.n)]
 
