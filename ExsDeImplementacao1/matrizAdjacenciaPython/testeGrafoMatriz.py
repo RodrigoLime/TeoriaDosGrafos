@@ -36,7 +36,7 @@ g.removeV(1)
 g.showMin()
 
 print(f"Grafo é completo? {g.isComplete()}")
-print(f"Grafo complementar: {g.Complementary()}")
+print(f"Grafo complementar: {g.complementary()}")
 
 #Grafo nao direcionado com peso
 nd = GrafoND(4, isWeighted=True)
