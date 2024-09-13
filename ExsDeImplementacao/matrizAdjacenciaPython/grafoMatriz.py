@@ -5,6 +5,7 @@ Created on Mon Feb 13 13:59:10 2023
 @author: icalc
 """
 from collections import deque
+import os
 
 class Grafo:
     TAM_MAX_DEFAULT = 100 # qtde de vértices máxima default
@@ -45,7 +46,7 @@ class Grafo:
     def outDegree(self, v):
         grau = 0
         for i in range(self.n):
-            # para cada vértice ivverifica se é adjacente a i
+            # para cada vértice verifica se é adjacente a i
             if self.adj[v][i] == 1:
                 grau+=1
         return grau
@@ -71,12 +72,14 @@ class Grafo:
 
     #Ex6
     def initFile(self, nomeArq):
-        arq = open(nomeArq, "r")
-        self.n = int(arq.readline())
-        self.m = int(arq.readline())
-        for _ in range(self.m):
-            v, w = map(int, arq.readline().split())
-            self.insereA(v, w)
+        script_dir = os.path.dirname(__file__)
+        file_path = os.path.join(script_dir, nomeArq)
+        with open(file_path, "r") as arq:
+            self.n = int(arq.readline())
+            m = int(arq.readline())
+            for _ in range(m):
+                v, w = map(int, arq.readline().split())
+                self.insereA(v, w)
         arq.close()
 
     #Ex9
@@ -125,7 +128,10 @@ class Grafo:
                         tempAdj[i][j] = 1
                     else:
                         tempAdj[i][j] = 0
-        return tempAdj
+        complementary = Grafo(self.n)
+        complementary.adj = tempAdj
+        complementary.m = self.m
+        return complementary
     
     #Ex14
     def directTransitiveClosure(self, v):
@@ -184,12 +190,20 @@ class Grafo:
         return True
 
     def isDisconnected(self):
+        # Cria o grafo não direcionado equivalente pois direcao em grafos s-conexos não importa
+        NDGraph = Grafo(self.n)
+        NDGraph.adj = self.adj
+        for i in range(self.n):
+            for j in range(self.n):
+                if self.adj[i][j] == 1:
+                    NDGraph.insereA(j, i)
+
         # usa os metodos de fecho transitivo direto e inverso para verificar se o grafo é desconexo
         for u in range(self.n):
             for v in range(self.n):
                 if u != v:
-                    direct_reach_u = self.directTransitiveClosure(u)
-                    direct_reach_v = self.directTransitiveClosure(v)
+                    direct_reach_u = NDGraph.directTransitiveClosure(u)
+                    direct_reach_v = NDGraph.directTransitiveClosure(v)
                     # se para algum par de vértices u e v, u não alcançar v e v não alcançar u, o grafo é desconexo
                     if not direct_reach_u[v] and not direct_reach_v[u]:
                         return True
@@ -230,7 +244,7 @@ class Grafo:
     def reduce(self):
         sccs = self.getStronglyConnectedComponents()
         scc_count = len(sccs)
-        # cria um dicionário para mapear os vértices para seus respectivos sccs
+        # cria um dicionário para mapear cada vértices ao seu respectivo scc
         scc_map = {v: i for i, scc in enumerate(sccs) for v in scc}
 
         # cria uma matriz de adjacência reduzida com os sccs
@@ -245,7 +259,9 @@ class Grafo:
                     if u_scc != v_scc:
                         reduced_adj[u_scc][v_scc] = 1
 
-        return Grafo(scc_count, reduced_adj)
+        reducedGraph = Grafo(scc_count)
+        reducedGraph.adj = reduced_adj
+        return reducedGraph
     
 
 	# Apresenta o Grafo contendo

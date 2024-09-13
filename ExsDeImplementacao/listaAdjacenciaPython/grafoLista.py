@@ -4,6 +4,7 @@ Created on Tue Feb 14 16:01:03 2023
 
 @author: icalc
 """
+import os
 
 # Grafo como uma lista de adjacência
 class Grafo:
@@ -18,13 +19,15 @@ class Grafo:
 	# Insere uma aresta no Grafo tal que
 	# v é adjacente a w
     def insereA(self, v, w):
-        self.listaAdj[v].append(w)
-        self.m+=1
+        if w not in self.listaAdj[v]:
+            self.listaAdj[v].append(w)
+            self.m+=1
      
     # remove uma aresta v->w do Grafo	
     def removeA(self, v, w):
-        self.listaAdj[v].remove(w)
-        self.m-=1
+        if w in self.listaAdj[v]:
+            self.listaAdj[v].remove(w)
+            self.m-=1
 
     #Ex17
     def isEqual(self, g):
@@ -86,24 +89,17 @@ class Grafo:
     
     #Ex23
     def initFile(self, nomeArq):
-        arq = open(nomeArq, "r")
-        self.n = int(arq.readline())
-        self.m = int(arq.readline())
-        for _ in range(self.m):
-            v, w = map(int, arq.readline().split())
-            self.insereA(v, w)
+        script_dir = os.path.dirname(__file__)
+        file_path = os.path.join(script_dir, nomeArq)
+        with open(file_path, "r") as arq:
+            self.n = int(arq.readline())
+            m = int(arq.readline())
+            for _ in range(m):
+                v, w = map(int, arq.readline().split())
+                self.insereA(v, w)
         arq.close()
-
-    #Ex24
-    def NDremoveV(self, v):
-        for i in range(self.n):
-            if v in self.listaAdj[i]:
-                self.listaAdj[i].remove(v)
-                self.m -= 1
-        self.listaAdj[v] = []
-        self.n -= 1
     
-    #Ex25
+    #Ex24 e 25
     def removeV(self, v):
         self.m -= len(self.listaAdj[v])
         self.listaAdj[v] = []
@@ -112,6 +108,14 @@ class Grafo:
             if v in self.listaAdj[i]:
                 self.listaAdj[i].remove(v)
                 self.m -= 1
+
+        for i in range(self.n):
+            self.listaAdj[i] = [x - 1 for x in self.listaAdj[i]]
+            if i > v:            
+                self.listaAdj[i-1] = self.listaAdj[i]
+
+        self.n -= 1
+
 
     #Ex26
     def isComplete(self):

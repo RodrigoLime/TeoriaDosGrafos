@@ -6,26 +6,42 @@ Created on Tue Feb 14 18:42:48 2023
 """
 from grafoLista import Grafo
 
+# Testes estão no relatório, não estão todos aqui porque fomos testando e
+# apagando para o terminal não ficar poluído 
+
 g = Grafo(4)
 #insere as arestas do grafo
 #A={(0,1),(0,2),(2,1),(2,3),(1,3)}
 g.insereA(0,1)
 g.insereA(0,2)
+g.insereA(0,3)
+g.insereA(1,0)
+g.insereA(1,2)
+g.insereA(1,3)
+g.insereA(2,0)
 g.insereA(2,1)
 g.insereA(2,3)
-g.insereA(1,3)
+g.insereA(3,0)
+g.insereA(3,1)
+g.insereA(3,2)
+
 # mostra o grafo preenchido
 g.show()
-g.removeA(0,1)
-g.show()
 
-g2 = Grafo(4)
-g2.insereA(0,2)
-g2.insereA(2,1)
-g2.insereA(2,3)
-g2.insereA(1,3)
+print(f"Grafo é completo? {g.isComplete()}")
 
-g2.show()
-print(g.isEqual(g2))
-print(g.convertToMatrix().listaAdj)
-g2.invert().show()
+# print("Grafo do arquivo inputLista.txt:")
+# gArq = Grafo()
+# gArq.initFile("inputLista.txt")
+# gArq.show()
+
+# g2 = Grafo(4)
+# g2.insereA(0,2)
+# g2.insereA(2,1)
+# g2.insereA(2,3)
+# g2.insereA(1,3)
+
+# g2.show()
+# print(F"Grafos são iguais? {g.isEqual(g2)}")
+# print(g.convertToMatrix().listaAdj)
+# g2.invert().show()
