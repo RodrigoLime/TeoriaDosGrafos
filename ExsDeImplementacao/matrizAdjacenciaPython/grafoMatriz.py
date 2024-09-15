@@ -4,6 +4,10 @@ Created on Mon Feb 13 13:59:10 2023
 
 @author: icalc
 """
+
+## Igor Benites Moura - 10403462
+## Rodrigo Machado de Assis Oliveira de Lima - 10401873
+
 from collections import deque
 import os
 

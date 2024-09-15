@@ -4,6 +4,10 @@ Created on Tue Feb 14 14:23:05 2023
 
 @author: icalc
 """
+
+## Igor Benites Moura - 10403462
+## Rodrigo Machado de Assis Oliveira de Lima - 10401873
+
 from grafoMatriz import Grafo
 from TGrafoND import GrafoND
 

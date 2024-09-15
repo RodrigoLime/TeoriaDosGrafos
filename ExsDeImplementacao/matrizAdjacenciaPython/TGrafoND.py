@@ -1,5 +1,8 @@
 #Ex7 e Ex8
 
+## Igor Benites Moura - 10403462
+## Rodrigo Machado de Assis Oliveira de Lima - 10401873
+
 class GrafoND:
     TAM_MAX_DEFAULT = 100 # qtde de vértices máxima default
     # construtor da classe grafo

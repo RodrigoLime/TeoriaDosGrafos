@@ -6,6 +6,9 @@ Created on Tue Feb 14 16:01:03 2023
 """
 import os
 
+## Igor Benites Moura - 10403462
+## Rodrigo Machado de Assis Oliveira de Lima - 10401873
+
 # Grafo como uma lista de adjacência
 class Grafo:
     TAM_MAX_DEFAULT = 100 # qtde de vértices máxima default

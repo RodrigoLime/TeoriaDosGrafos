@@ -4,6 +4,10 @@ Created on Tue Feb 14 18:42:48 2023
 
 @author: icalc
 """
+
+## Igor Benites Moura - 10403462
+## Rodrigo Machado de Assis Oliveira de Lima - 10401873
+
 from grafoLista import Grafo
 
 # Testes estão no relatório, não estão todos aqui porque fomos testando e
