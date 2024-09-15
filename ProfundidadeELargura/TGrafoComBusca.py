@@ -4,7 +4,14 @@ Created on Mon Feb 13 13:59:10 2023
 
 @author: icalc
 """
+
+## Igor Benites Moura - 10403462
+## Rodrigo Machado de Assis Oliveira de Lima - 10401873
+
 from collections import deque
+
+import pilhaPython.pilha as pilha
+import filaCircularPython.filaCircular as fila
 
 class Grafo:
     TAM_MAX_DEFAULT = 100 # qtde de vértices máxima default
@@ -32,54 +39,40 @@ class Grafo:
             self.adj[v][w] = 0
             self.m-=1 # atualiza qtd arestas
 
-    def inDegree(self, v):
-        grau = 0
-        for i in range(self.n):
-            # para cada vértice i verifica se é adjacente a v
-            if self.adj[i][v] == 1:
-                grau+=1
-        return grau
+    def dfs(self, start):
+        visited = [False] * self.n
+        stack = pilha.Pilha()
+        stack.push(start)
+        visited[start] = True
 
-    def outDegree(self, v):
-        grau = 0
-        for i in range(self.n):
-            # para cada vértice ivverifica se é adjacente a i
-            if self.adj[v][i] == 1:
-                grau+=1
-        return grau
-    
-    def directTransitiveClosure(self, v):
-        # usa busca em largura para encontrar todos os vértices que são alcançáveis a partir de v
-        reach = [0] * self.n
-        queue = deque([v])
-        reach[v] = 1
+        while not stack.isEmpty():
+            n = stack.pop()
+            print(f"Visitou vértice {n}")
 
-        # enquanto a fila não estiver vazia, verifica os vértices adjacentes
-        while queue:
-            current = queue.popleft()
-            for j in range(self.n):
-                if self.adj[current][j] == 1 and not reach[j]:
-                    reach[j] = 1
-                    queue.append(j)
+            for m in range(self.n):
+                if self.adj[n][m] == 1 and not visited[m]:
+                    print(f"Vértice {n} entrou na pilha")
+                    stack.push(n)
+                    stack.push(m)
+                    visited[m] = True
+                    break
+        
+    def bfs(self, start):
+        visited = [False] * self.n
+        queue = fila.FilaCircular(self.n)
+        queue.enqueue(start)
+        visited[start] = True
 
-        return reach
+        while not queue.isEmpty():
+            n = queue.dequeue()
+            print(f"Visitou vértice {n}")
 
-    def inverseTransitiveClosure(self, v):
-        # usa busca em largura para encontrar todos os vértices que alcançam v
-        reach = [0] * self.n
-        queue = deque([v])
-        reach[v] = 1
+            for m in range(self.n):
+                if self.adj[n][m] == 1 and not visited[m]:
+                    print(f"Vértice {m} entrou na fila")
+                    queue.enqueue(m)
+                    visited[m] = True
 
-        # enquanto a fila não estiver vazia, verifica os vértices adjacentes
-        while queue:
-            current = queue.popleft()
-            for j in range(self.n):
-                if self.adj[j][current] == 1 and not reach[j]:
-                    reach[j] = 1
-                    queue.append(j)
-
-        return reach
-    
 
 	# Apresenta o Grafo contendo
 	# número de vértices, arestas
