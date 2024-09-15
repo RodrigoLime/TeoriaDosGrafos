@@ -24,6 +24,20 @@ gr = g.reduce()
 print("Grafo reduzido:")
 gr.showMin()
 
+gw = Grafo(5, isWeighted=True)
+
+gw.insereA(0,1,20) # insere aresta 0->1 com peso 20
+gw.insereA(0,2,30)
+gw.insereA(2,1,21)
+gw.insereA(1,3,22)
+gw.insereA(3,4,50)
+
+gw.showMin()
+
+gw.removeA(0,1)
+
+gw.show()
+
 
 
 

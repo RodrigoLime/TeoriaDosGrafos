@@ -13,6 +13,7 @@ class Grafo:
     def __init__(self, n=TAM_MAX_DEFAULT, isWeighted=False):
         self.n = n # número de vértices
         self.m = 0 # número de arestas
+        self.isWeighted = isWeighted
         # matriz de adjacência
         if isWeighted:
             self.adj = [[float('inf') for i in range(n)] for j in range(n)]
@@ -21,17 +22,26 @@ class Grafo:
 
 	# Insere uma aresta no Grafo tal que
 	# v é adjacente a w
-    def insereA(self, v, w):
-        if self.adj[v][w] == 0:
-            self.adj[v][w] = 1
-            self.m+=1 # atualiza qtd arestas
+    def insereA(self, v, w, weight=1):
+        if self.isWeighted:
+            if self.adj[v][w] == float('inf'):
+                self.adj[v][w] = weight
+                self.m+=1 # atualiza qtd arestas
+        else:
+            if self.adj[v][w] == 0:
+                self.adj[v][w] = 1
+                self.m+=1
     
     # remove uma aresta v->w do Grafo	
     def removeA(self, v, w):
-        # testa se temos a aresta
-        if self.adj[v][w] == 1:
-            self.adj[v][w] = 0
-            self.m-=1 # atualiza qtd arestas
+        if self.isWeighted:
+            if self.adj[v][w] != float('inf'):
+                self.adj[v][w] = float('inf')
+                self.m-=1
+        else:
+            if self.adj[v][w] == 1:
+                self.adj[v][w] = 0
+                self.m-=1 # atualiza qtd arestas
 
     #Ex1
     def inDegree(self, v):
@@ -272,10 +282,16 @@ class Grafo:
         print(f"m: {self.m:2d}\n")
         for i in range(self.n):
             for w in range(self.n):
-                if self.adj[i][w] == 1:
-                    print(f"Adj[{i:2d},{w:2d}] = 1 ", end="") 
-                else:
-                    print(f"Adj[{i:2d},{w:2d}] = 0 ", end="")
+                if self.isWeighted:
+                    if self.adj[i][w] != float('inf'):
+                        print(f"Adj[{i:2d},{w:2d}] = {self.adj[i][w]:2d} ", end="") 
+                    else:
+                        print(f"Adj[{i:2d},{w:2d}] = inf ", end="")
+                else:         
+                    if self.adj[i][w] == 1:
+                        print(f"Adj[{i:2d},{w:2d}] = 1 ", end="") 
+                    else:
+                        print(f"Adj[{i:2d},{w:2d}] = 0 ", end="")
             print("\n")
         print("\nfim da impressao do grafo." )
 
@@ -289,10 +305,16 @@ class Grafo:
         print(f"m: {self.m:2d}\n")
         for i in range(self.n):
             for w in range(self.n):
-                if self.adj[i][w] == 1:
-                    print(" 1 ", end="") 
+                if self.isWeighted:
+                    if self.adj[i][w] != float('inf'):
+                        print(f" {self.adj[i][w]:2d} ", end="") 
+                    else:
+                        print(" ∞  ", end="")
                 else:
-                    print(" 0 ", end="")
+                    if self.adj[i][w] == 1:
+                        print(" 1 ", end="") 
+                    else:
+                        print(" 0 ", end="")
             print("\n")
         print("\nfim da impressao do grafo." )
     
