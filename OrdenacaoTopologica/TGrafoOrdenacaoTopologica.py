@@ -4,7 +4,11 @@ Created on Mon Feb 13 13:59:10 2023
 
 @author: icalc
 """
-from collections import deque
+
+## Igor Benites Moura - 10403462
+## Rodrigo Machado de Assis Oliveira de Lima - 10401873
+
+from filaCircularPython import filaCircular
 
 class Grafo:
     TAM_MAX_DEFAULT = 100 # qtde de vértices máxima default
@@ -48,37 +52,35 @@ class Grafo:
                 grau+=1
         return grau
     
-    def directTransitiveClosure(self, v):
-        # usa busca em largura para encontrar todos os vértices que são alcançáveis a partir de v
-        reach = [0] * self.n
-        queue = deque([v])
-        reach[v] = 1
+    def topologicOrdering(self):
+        # grau de entrada de cada vértice
+        GE = [0] * self.n
+        for i in range(self.n):
+            GE[i] = self.inDegree(i)
+        
+        # fila de vértices com grau de entrada zero
+        F = filaCircular.FilaCircular()
+        for i in range(self.n):
+            if GE[i] == 0:
+                print(f"Vértice {i} foi colocado na fila")
+                F.enqueue(i)
+                GE[i] = -1
 
-        # enquanto a fila não estiver vazia, verifica os vértices adjacentes
-        while queue:
-            current = queue.popleft()
-            for j in range(self.n):
-                if self.adj[current][j] == 1 and not reach[j]:
-                    reach[j] = 1
-                    queue.append(j)
+        # processa os vértices
+        while not F.isEmpty():
+            print("Array GE:", GE)
+            # remove um vértice da fila
+            v = F.dequeue()
+            print(f"Vértice {v} foi removido da fila")
+            for w in range(self.n):
+                # para cada vértice w adjacente a v, decrementa o grau de entrada e se for zero, coloca na fila
+                if self.adj[v][w] == 1:
+                    GE[w]-=1
+                    if GE[w] == 0:
+                        print(f"Vértice {w} foi colocado na fila")
+                        F.enqueue(w)
+                        GE[w] = -1
 
-        return reach
-
-    def inverseTransitiveClosure(self, v):
-        # usa busca em largura para encontrar todos os vértices que alcançam v
-        reach = [0] * self.n
-        queue = deque([v])
-        reach[v] = 1
-
-        # enquanto a fila não estiver vazia, verifica os vértices adjacentes
-        while queue:
-            current = queue.popleft()
-            for j in range(self.n):
-                if self.adj[j][current] == 1 and not reach[j]:
-                    reach[j] = 1
-                    queue.append(j)
-
-        return reach
     
 
 	# Apresenta o Grafo contendo
