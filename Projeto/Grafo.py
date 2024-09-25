@@ -50,6 +50,7 @@ class Grafo:
         
         # Remove arestas que tem v como origem
         self.listaAdj[v] = []
+        self.listaAdjPesos[v] = []
         
         # Remove arestas que tem v como destino
         for i in range(self.n):
@@ -61,10 +62,13 @@ class Grafo:
 
         # Atualiza os índices dos vértices
         for i in range(self.n):
-            self.listaAdj[i] = [x - 1 for x in self.listaAdj[i]]
+            self.listaAdj[i] = [x - 1 if x > v else x for x in self.listaAdj[i]]
             if i > v:            
                 self.listaAdj[i-1] = self.listaAdj[i]
                 self.listaAdjPesos[i-1] = self.listaAdjPesos[i]
+
+        # Remove o vértice da lista de rotulos
+        self.rotulos.pop(v)
 
         self.n -= 1
 
@@ -196,9 +200,10 @@ class Grafo:
         script_dir = os.path.dirname(__file__)
         file_path = os.path.join(script_dir, nomeArq)
         try:
-            with open(file_path, "r") as arq:
+            with open(file_path, "r", encoding="utf-8") as arq:
                 self.tipo = int(arq.readline().strip())
                 self.n = int(arq.readline().strip())
+                self.rotulos = [''] * self.n
                 for _ in range(self.n):
                     line = arq.readline().strip()
                     parts = line.split(' ', 1)
@@ -210,6 +215,8 @@ class Grafo:
                     line = arq.readline().strip()
                     a, b, peso = map(int, line.split())
                     self.insereA(a, b, peso)
+                print("\nGrafo lido do arquivo grafo.txt.")
+
         except FileNotFoundError:
             print(f"Erro: O arquivo '{nomeArq}' não foi encontrado.")
         except Exception as e:
@@ -219,7 +226,7 @@ class Grafo:
     def updateFile(self, nomeArq):
         script_dir = os.path.dirname(__file__)
         file_path = os.path.join(script_dir, nomeArq)
-        with open(file_path, "w") as arq:
+        with open(file_path, "w", encoding="utf-8") as arq:
             arq.write(f"{self.tipo}\n")
             arq.write(f"{self.n}\n")
             for i in range(self.n):
@@ -236,7 +243,7 @@ class Grafo:
         script_dir = os.path.dirname(__file__)
         file_path = os.path.join(script_dir, nomeArq)
         try:
-            with open(file_path, "r") as arq:
+            with open(file_path, "r", encoding="utf-8") as arq:
                 tipo = int(arq.readline().strip())
                 n = int(arq.readline().strip())
                 rotulos = {}

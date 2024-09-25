@@ -20,7 +20,6 @@ def menu():
         opcao = int(input("Escolha uma opção: "))
         if opcao == 1:
             g.initFile('grafo.txt')
-            print("\nGrafo lido do arquivo grafo.txt.")
         elif opcao == 2:
             rotulo = input("Rótulo do vértice: ")
             g.insereV(rotulo)
@@ -43,13 +42,13 @@ def menu():
         elif opcao == 8:
             conexidade = g.conexidade()
             if conexidade == 3:
-                print("Grafo é fortemente conexo (C3).")
+                print("\nGrafo é fortemente conexo (C3).")
             elif conexidade == 2:
-                print("Grafo é semi-fortemente conexo (C2).")
+                print("\nGrafo é semi-fortemente conexo (C2).")
             elif conexidade == 1:
-                print("Grafo é simplesmente conexo (C1).")
+                print("\nGrafo é simplesmente conexo (C1).")
             else:
-                print("Grafo é desconexo (C0).")
+                print("\nGrafo é desconexo (C0).")
         elif opcao == 9:
             print("Grafo Reduzido:")
             gr = g.grafoReduzido()
