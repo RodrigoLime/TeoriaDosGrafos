@@ -20,15 +20,25 @@ class Grafo:
 	# Insere uma aresta no Grafo tal que
 	# v é adjacente a w
     def insereA(self, v, w, peso):
+        if v < 0 or v >= self.n or w < 0 or w >= self.n:
+            print("\nVértice inválido")
+            return
+
+        if v == w:
+            print("\nArestas entre o mesmo vértice não são permitidas")
+            return
+
         if w not in self.listaAdj[v]:
             self.listaAdj[v].append(w)
             self.listaAdjPesos[v].append(peso)
             self.m+=1
+            if peso != 0:
+                print(f"\nAresta ({v}, {w}) inserida com sucesso.")
      
     # remove uma aresta v->w do Grafo	
     def removeA(self, v, w):
         if v < 0 or v >= self.n or w < 0 or w >= self.n:
-            print("Vértice inválido")
+            print("\nVértice inválido")
             return
         
         if w in self.listaAdj[v]:
@@ -36,6 +46,9 @@ class Grafo:
             self.listaAdj[v].pop(index)
             self.listaAdjPesos[v].pop(index)
             self.m-=1
+            print(f"\nAresta ({v}, {w}) removida com sucesso.")
+        else:
+            print(f"\nAresta ({v}, {w}) não existe no grafo.")
 
     # insere um vértice no Grafo
     def insereV(self, rotulo):
@@ -43,9 +56,14 @@ class Grafo:
         self.listaAdjPesos.append([])
         self.rotulos.append(rotulo)
         self.n += 1
+        print(f"\nVértice {rotulo} inserido com sucesso.")
 
     # remove um vértice do Grafo        
     def removeV(self, v):
+        if v < 0 or v >= self.n:
+            print("\nVértice inválido")
+            return
+
         self.m -= len(self.listaAdj[v])
         
         # Remove arestas que tem v como origem
@@ -67,10 +85,16 @@ class Grafo:
                 self.listaAdj[i-1] = self.listaAdj[i]
                 self.listaAdjPesos[i-1] = self.listaAdjPesos[i]
 
+        # Remove o ultimo vértice da lista de adjacência
+        self.listaAdj.pop()
+        self.listaAdjPesos.pop()
+
+
         # Remove o vértice da lista de rotulos
         self.rotulos.pop(v)
 
         self.n -= 1
+        print(f"\nVértice {v} removido com sucesso.")
 
     def fechoTransitivoDireto(self, v):
         # usa busca em largura para encontrar todos os vértices que são alcançáveis a partir de v
@@ -134,8 +158,8 @@ class Grafo:
         
         for i in range(self.n):
             for j in self.listaAdj[i]:
-                NDGraph.insereA(i, j, 1)
-                NDGraph.insereA(j, i, 1)
+                NDGraph.insereA(i, j, 0)
+                NDGraph.insereA(j, i, 0)
 
         # usa o metodo de fecho transitivo direto em pares de vertices para verificar se o grafo é desconexo
         for u in range(self.n):
@@ -192,6 +216,7 @@ class Grafo:
                     reduced_adj[u_scc].append(v_scc)
 
         reducedGraph = Grafo(scc_contagem)
+        reducedGraph.m = sum(len(adj) for adj in reduced_adj)
         reducedGraph.listaAdj = reduced_adj
         return reducedGraph
 
@@ -204,12 +229,15 @@ class Grafo:
                 self.tipo = int(arq.readline().strip())
                 self.n = int(arq.readline().strip())
                 self.rotulos = [''] * self.n
+                self.listaAdj = [[] for i in range(self.n)]
+                self.listaAdjPesos = [[] for i in range(self.n)]
                 for _ in range(self.n):
                     line = arq.readline().strip()
                     parts = line.split(' ', 1)
                     id = int(parts[0])
                     rotulo = parts[1].strip('"')
                     self.rotulos[id] = rotulo
+                    print(f"Vértice {id}: {rotulo} inserido")
                 m = int(arq.readline())
                 for _ in range(m):
                     line = arq.readline().strip()
@@ -260,7 +288,7 @@ class Grafo:
                     a, b, peso = map(int, line.split())
                     arestas.append((a, b, peso))
 
-                print(f"Tipo do grafo: {tipo}")
+                print(f"\nTipo do grafo: {tipo}")
                 print(f"\nVértices: {n}")
                 for i in range(n):
                     print(f"{i}: {rotulos[i]}")
