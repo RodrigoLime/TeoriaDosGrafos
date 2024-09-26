@@ -1,6 +1,11 @@
 ## Igor Benites Moura - 10403462
 ## Rodrigo Machado de Assis Oliveira de Lima - 10401873
 
+## Classe main, implementando um menu de opções para manipulação de um grafo.
+
+## O histórico de alterações do código está disponível no GitHub do projeto:
+## https://github.com/RodrigoLime/TeoriaDosGrafos/tree/main/Projeto
+
 from Grafo import Grafo
 
 def menu():

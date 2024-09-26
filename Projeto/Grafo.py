@@ -13,7 +13,9 @@ class Grafo:
         self.m = 0 # número de arestas
         # lista de adjacência
         self.listaAdj = [[] for i in range(self.n)]
+        # foi criada uma lista de adjacencia auxiliar para armazenar os pesos das arestas
         self.listaAdjPesos = [[] for i in range(self.n)]
+        # lista dos rotulos dos vértices
         self.rotulos = [" " for i in range(self.n)]
         self.tipo = 0
         
