@@ -97,7 +97,39 @@ class Grafo:
 
         self.n -= 1
         print(f"\nVértice {v} removido com sucesso.")
+    
+    #Algoritmo de PageRank
+    def pagerank(self, d=0.85, max_iterations=100, tol=1.0e-6):
+        # Step 1: Inicializar valores PageRank
+        n = self.n
+        pagerank = [1.0 / n] * n
+        new_pagerank = [0.0] * n
 
+        # Step 2: Itera para atualizar os valores do PageRank
+        for i in range(max_iterations):
+            # Step 3: Lida com vertices sem arestas de saída
+            dangling_sum = sum(pagerank[i] for i in range(n) if not self.listaAdj[i])
+
+            for i in range(n):
+                new_pagerank[i] = (1 - d) / n
+                new_pagerank[i] += d * dangling_sum / n
+                for j in self.listaAdj[i]:
+                    new_pagerank[j] += d * pagerank[i] / len(self.listaAdj[i])
+
+            # Checa por convergência
+            if sum(abs(new_pagerank[i] - pagerank[i]) for i in range(n)) < tol:
+                break
+
+            pagerank, new_pagerank = new_pagerank, [0.0] * n
+        
+        # Pareia cada vértice com seu valor de PageRank
+        pagerank_with_indices = list(enumerate(pagerank))
+
+        # Ordena os valores de PageRank em ordem decrescente
+        pagerank_with_indices.sort(key=lambda x: x[1], reverse=True)
+
+        return pagerank_with_indices
+    
     def fechoTransitivoDireto(self, v):
         # usa busca em largura para encontrar todos os vértices que são alcançáveis a partir de v
         alcance = [0] * self.n

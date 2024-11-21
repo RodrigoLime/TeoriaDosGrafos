@@ -21,7 +21,8 @@ def menu():
         print("7. Mostrar Grafo")
         print("8. Verificar Conexidade")
         print("9. Mostrar Grafo Reduzido")
-        print("10. Sair e Atualizar Arquivo")
+        print("10. Calcular Centralidade de Vértices")
+        print("11. Sair e Atualizar Arquivo")
         opcao = int(input("Escolha uma opção: "))
         if opcao == 1:
             g.initFile('grafo.txt')
@@ -59,9 +60,20 @@ def menu():
             gr = g.grafoReduzido()
             gr.showIds()
         elif opcao == 10:
+            p = g.pagerank()
+            print("\nPageRank:")
+
+            # Imprime os valores de PageRank ordenados com seus índices de vértice correspondentes
+            i = 1
+            for index, value in p:
+                print(f"{i}: Vértice {index}: ({g.rotulos[index]})")
+                i += 1
+
+        elif opcao == 11:
             g.updateFile('grafoatt.txt')
             print("Arquivo atualizado e programa encerrado.")
             break
+        
         else:
             print("Opção inválida. Tente novamente.")
 
