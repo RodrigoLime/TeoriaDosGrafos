@@ -100,29 +100,43 @@ class Grafo:
     
     #Algoritmo de PageRank
     def pagerank(self, d=0.85, max_iterations=100, tol=1.0e-6):
-        # Step 1: Inicializar valores PageRank
+        """
+        Calcula o PageRank para cada vértice no grafo, considerando os pesos das conexões.
+        
+        Parametros: 
+        d (float): Fator de amortecimento.
+        max_iterations (int): Número máximo de iterações.
+        tol (float): Tolerância para a convergência.
+        
+        Returns:
+        list: Lista de tuplas contendo o índice do vértice e seu valor de PageRank em ordem decrescente de valor adquirido.
+        """
+        # Passo 1: Inicializa o PageRank de cada vértice
         n = self.n
         pagerank = [1.0 / n] * n
         new_pagerank = [0.0] * n
 
-        # Step 2: Itera para atualizar os valores do PageRank
-        for i in range(max_iterations):
-            # Step 3: Lida com vertices sem arestas de saída
+        # Passo 2: Itera até a convergência
+        for _ in range(max_iterations):
+            # Calcula a soma dos PageRanks dos vértices sem arestas de saída
             dangling_sum = sum(pagerank[i] for i in range(n) if not self.listaAdj[i])
 
             for i in range(n):
                 new_pagerank[i] = (1 - d) / n
                 new_pagerank[i] += d * dangling_sum / n
-                for j in self.listaAdj[i]:
-                    new_pagerank[j] += d * pagerank[i] / len(self.listaAdj[i])
+                for j in range(n):
+                    if i in self.listaAdj[j]:
+                        index = self.listaAdj[j].index(i)
+                        peso = self.listaAdjPesos[j][index]
+                        new_pagerank[i] += d * pagerank[j] * peso / sum(self.listaAdjPesos[j])
 
-            # Checa por convergência
+            # Verifica a convergência
             if sum(abs(new_pagerank[i] - pagerank[i]) for i in range(n)) < tol:
                 break
 
             pagerank, new_pagerank = new_pagerank, [0.0] * n
         
-        # Pareia cada vértice com seu valor de PageRank
+        # Adiciona os índices aos valores de PageRank
         pagerank_with_indices = list(enumerate(pagerank))
 
         # Ordena os valores de PageRank em ordem decrescente
