@@ -97,7 +97,43 @@ class Grafo:
 
         self.n -= 1
         print(f"\nVértice {v} removido com sucesso.")
+
+    def grauEntrada (self, v):
+        # Retorna o grau de entrada do vértice v
+        grau = 0
+        for i in range(self.n):
+            if v in self.listaAdj[i]:
+                grau += 1
+        return grau
     
+    def grauEntradaPonderado (self, v):
+        # Retorna o grau de entrada ponderado do vértice v
+        grau = 0
+        for i in range(self.n):
+            if v in self.listaAdj[i]:
+                index = self.listaAdj[i].index(v)
+                grau += self.listaAdjPesos[i][index]
+        return grau
+
+    def grauSaida (self, v):
+        # Retorna o grau de saída do vértice v
+        return len(self.listaAdj[v])
+    
+    def grauSaidaPonderado (self, v):
+        # Retorna o grau de saída ponderado do vértice v
+        grau = 0
+        for i in range(len(self.listaAdj[v])):
+            grau += self.listaAdjPesos[v][i]
+        return grau
+
+    def grau (self, v):
+        # Retorna o grau do vértice v
+        return self.grauEntrada(v) + self.grauSaida(v)
+    
+    def grauPonderado (self, v):
+        # Retorna o grau ponderado do vértice v
+        return self.grauEntradaPonderado(v) + self.grauSaidaPonderado(v)
+
     #Algoritmo de PageRank
     def pagerank(self, d=0.85, max_iterations=100, tol=1.0e-6):
         """

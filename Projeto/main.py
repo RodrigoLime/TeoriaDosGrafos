@@ -21,8 +21,10 @@ def menu():
         print("7. Mostrar Grafo")
         print("8. Verificar Conexidade")
         print("9. Mostrar Grafo Reduzido")
-        print("10. Calcular Centralidade de Vértices")
-        print("11. Sair e Atualizar Arquivo")
+        print("10. Calcular Grau de um Vértice")
+        print("11. Calcular Grau Ponderado de um Vértice")
+        print("12. Calcular Centralidade de Vértices")
+        print("13. Sair e Atualizar Arquivo")
         opcao = int(input("Escolha uma opção: "))
         if opcao == 1:
             g.initFile('grafo.txt')
@@ -60,16 +62,31 @@ def menu():
             gr = g.grafoReduzido()
             gr.showIds()
         elif opcao == 10:
+            print("Digite o número do vértice para calcular seu grau:")
+            id_vertice = int(input())
+            if id_vertice < g.n:
+                grau = g.grau(id_vertice)
+                print(f"Grau do vértice {id_vertice} ({g.rotulos[id_vertice]}): {grau}")
+            else:
+                print("Vértice não existe.")
+        elif opcao == 11:
+            print("Digite o número do vértice para calcular seu grau ponderado:")
+            id_vertice = int(input())
+            if id_vertice < g.n:
+                grau_ponderado = g.grauPonderado(id_vertice)
+                print(f"Grau ponderado do vértice {id_vertice} ({g.rotulos[id_vertice]}): {grau_ponderado}")
+            else:
+                print("Vértice não existe.")
+        elif opcao == 12:
             p = g.pagerank()
             print("\nPageRank:")
 
-            # Imprime os valores de PageRank ordenados com seus índices de vértice correspondentes
-            i = 1
-            for index, value in p:
-                print(f"{i}: Vértice {index}: ({g.rotulos[index]})")
-                i += 1
+            sorted_indices = [index for index, _ in p]
 
-        elif opcao == 11:
+            for i, index in enumerate(sorted_indices, start=1):
+                print(f"{i}: Vértice {index}: ({g.rotulos[index]})")
+
+        elif opcao == 13:
             g.updateFile('grafoatt.txt')
             print("Arquivo atualizado e programa encerrado.")
             break
