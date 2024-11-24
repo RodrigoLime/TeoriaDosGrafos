@@ -6,3 +6,6 @@
 
 ## Ferramentas utilizadas
 - VSCode (editor de texto)
+
+## Link do vídeo no Youtube
+https://www.youtube.com/watch?v=pwKAWCYqRnc
